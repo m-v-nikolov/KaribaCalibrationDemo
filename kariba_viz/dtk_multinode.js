@@ -20,7 +20,7 @@ var colorScaleRDT = d3.scale.quantize()
             .range(colorbrewer.OrRd[9]);
 
 var colorScaleRMSE = d3.scale.quantize()
-.domain([-0.0, 0.03])
+.domain([-0.03, 0.01])
 .range(colorbrewer.RdYlGn[9]);
 
 var colorScaleReinf = d3.scale.quantize()
@@ -318,7 +318,6 @@ function pop_bubbles_map_display(id, clusters_input, title, map_type, histogram,
                 if(itns)
                 {
                 	var itn_cov_val = itn_level_2_ordinal(d.itn_level);
-                	
             		if (itn_cov_val >= 0) { c = colorScaleITNCov(itn_cov_val); } // TODO: color legend?
                 }
                 if(sim_reinf)
@@ -656,7 +655,7 @@ function display_text_f(d) {
 		 //alert(facilityID +  " " + rdt)
 		 if (rmse < 0) { rmse = 'N/A'; }
 		 display_text.push(facilityID);
-		 display_text.push(" Calib. Sim. Distance:" + rmse.toPrecision(2));
+		 display_text.push(" Residual:" + rmse.toPrecision(2));
 	}
 	else
 	if(this.id.indexOf("population") != -1)
@@ -706,20 +705,21 @@ function display_text_f(d) {
 	{
 		var drug_cov = this.__data__.drug_coverage;
 		
-		drug_coverages = ["0.35",0,"0.55",0, "0.7"];
-		drug_cov_val = drug_coverages[drug_cov]; 
+		//drug_coverages = ["0.35",0,"0.55",0, "0.7"];
+		//drug_cov_val = drug_coverages[drug_cov]; 
 		
-		display_text.push(facilityID + " : Drug cov.");		
-		display_text.push("per rnd: "+drug_cov_val);
+		display_text.push(facilityID + " : MSaT cov.");		
+		//display_text.push("per rnd: "+drug_cov_val);
+		display_text.push("per rnd: "+drug_cov);
 	}
 	if(this.id.indexOf("itn_coverage") != -1)
 	{
-		var itn_level = this.__data__.itn_level;
+		var itn_level = itn_level_2_ordinal(this.__data__.itn_level);
 		
-		itn_levels = [0.25, 0.35, 0.45, 0.6];
+		itn_levels = [0.25, 0, 0.35, 0, 0.45, 0, 0.6, 0, 0.7, 0, 0.85, 0, 0.75];
 		itn_level_val = itn_levels[itn_level]; 
 		
-		display_text.push(facilityID + " : ITN cov. at rnd. 1, after ramp up");		
+		display_text.push(facilityID + " : Cov. at rnd. 1, after ramp up");		
 		display_text.push(""+itn_level_val);
 	}
 	if(this.id.indexOf("sim_reinfection") != -1)
@@ -1679,7 +1679,7 @@ function load_map_bubbles_hist_err_surf(json_input, json_input_gazeteer, map_tit
 	*/
 	
 	map_display = null;
-	var pop_bubbles_layer_rmse = new pop_bubbles_map_display("pop_bubbles_rmse", json_input, "Calib. Sim. Distance", "rmse",  true, true, false, true, false, false, false, false, false, false, false);
+	var pop_bubbles_layer_rmse = new pop_bubbles_map_display("pop_bubbles_rmse", json_input, "Residuals", "rmse",  true, true, false, true, false, false, false, false, false, false, false);
 	
 	map_display = null;
 	//var pop_squares_layer_habs =  pop_squares_map_display("pop_squares_habs", json_input, "Hab. (RDT+ fit)", "habitats", true);
