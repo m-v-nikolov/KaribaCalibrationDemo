@@ -44,7 +44,6 @@ function itn_level_2_ordinal(level)
 {
 	//alert(level)
 	if (level == "ext_low")
-		alert(level)
 		return 0;
 		
 	if (level == "very_low")
