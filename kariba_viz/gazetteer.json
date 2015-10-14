@@ -1,0 +1,10 @@
+[
+    {
+        "sweep_name": "cc_trunc_ls_norm_categories_weather_pilot", 
+        "name": "{lowest,ext_low,low,very_low}<br />[0.01, 12.0]<br />[0.05, 12.0]<br />{0.7,0.55,0.35}<br />"
+    }, 
+    {
+        "sweep_name": "cc_trunc_ls_norm_categories_weather_pilot", 
+        "name": "{lowest,ext_low,low,very_low}<br />[0.01, 12.0]<br />[0.05, 12.0]<br />{0.7,0.55,0.35}<br />"
+    }
+]
