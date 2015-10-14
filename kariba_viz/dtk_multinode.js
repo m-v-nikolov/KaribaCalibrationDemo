@@ -42,7 +42,7 @@ var colorScaleHabsAll = d3.scale.quantize()
 
 function itn_level_2_ordinal(level)
 {
-	alert(level)
+	//alert(level)
 	if (level == "ext_low")
 		alert(level)
 		return 0;
