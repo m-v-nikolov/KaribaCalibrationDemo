@@ -1,0 +1,26 @@
+[
+    {
+        "sweep_name": "corr_norm_pop_cc_2010_2012_cc1000_categories_weather_pilot_debug", 
+        "name": "{lowest,ext_low,low,very_low}<br />[0.01, 12.0]<br />[0.05, 12.0]<br />{0.7,0.55,0.35}<br />corr_norm_pop_cc_2010_2012_cc_w_1000<br />"
+    }, 
+    {
+        "sweep_name": "corr_norm_pop_cc_2010_2012_cc0_categories_weather_pilot_debug", 
+        "name": "{lowest,ext_low,low,very_low}<br />[0.01, 12.0]<br />[0.05, 12.0]<br />{0.7,0.55,0.35}<br />corr_norm_pop_cc_2010_2012_cc_w_0<br />"
+    }, 
+    {
+        "sweep_name": "corr_norm_pop_cc_2010_2012_cc0.00125_categories_weather_pilot_debug", 
+        "name": "{lowest,ext_low,low,very_low}<br />[0.01, 12.0]<br />[0.05, 12.0]<br />{0.7,0.55,0.35}<br />corr_norm_pop_cc_2010_2012_cc_w_0.00125<br />"
+    }, 
+	{
+        "sweep_name": "corr_norm_pop_cc_2010_2013_cc1000_categories_weather_pilot_debug", 
+        "name": "{lowest,ext_low,low,very_low}<br />[0.01, 12.0]<br />[0.05, 12.0]<br />{0.7,0.55,0.35}<br />corr_norm_pop_cc_2010_2013_cc_w_1000<br />"
+    }, 
+    {
+        "sweep_name": "corr_norm_pop_cc_2010_2013_cc0_categories_weather_pilot_debug", 
+        "name": "{lowest,ext_low,low,very_low}<br />[0.01, 12.0]<br />[0.05, 12.0]<br />{0.7,0.55,0.35}<br />corr_norm_pop_cc_2010_2013_cc_w_0<br />"
+    }, 
+    {
+        "sweep_name": "corr_norm_pop_cc_2010_2013_cc0.00125_categories_weather_pilot_debug", 
+        "name": "{lowest,ext_low,low,very_low}<br />[0.01, 12.0]<br />[0.05, 12.0]<br />{0.7,0.55,0.35}<br />corr_norm_pop_cc_2010_2013_cc_w_0.00125<br />"
+    }
+]
