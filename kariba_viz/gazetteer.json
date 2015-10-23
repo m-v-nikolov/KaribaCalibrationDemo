@@ -26,5 +26,13 @@
     {
         "sweep_name": "corr_norm_pop_folded_cc_2011_2013_cc_w_0.00125_categories_weather_pilot_debug", 
         "name": "{lowest,ext_low,low,very_low}<br />[0.01, 12.0]<br />[0.05, 12.0]<br />{0.7,0.55,0.35}<br />corr_norm_pop_folded_cc_2011_2013_cc_w_0.00125<br />"
+    }, 
+    {
+        "sweep_name": "ls_norm_pop_folded_cc_2011_2013_cc_w_1000_categories_weather_pilot_debug", 
+        "name": "{lowest,ext_low,low,very_low}<br />[0.01, 12.0]<br />[0.05, 12.0]<br />{0.7,0.55,0.35}<br />ls_norm_pop_folded_cc_2011_2013_cc_w_1000<br />"
+    }, 
+    {
+        "sweep_name": "ls_norm_pop_folded_cc_2011_2013_cc_w_0.00125_categories_weather_pilot_debug", 
+        "name": "{lowest,ext_low,low,very_low}<br />[0.01, 12.0]<br />[0.05, 12.0]<br />{0.7,0.55,0.35}<br />ls_norm_pop_folded_cc_2011_2013_cc_w_0.00125<br />"
     }
 ]
