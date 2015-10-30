@@ -119,6 +119,19 @@ a:hover {
 	cursor:hand;
 }
 
+.gazeteer_model
+{
+	font-size:7pt;
+	background-color: #ffffff;
+	color: #005a32;
+	font-weight:bolder;
+	list-style-type: none;
+	display:inline-block; 
+	padding-right: 20px;
+	cursor:pointer;
+	cursor:hand;
+}
+
 .rnd_option
 {
 	font-size:7pt;
@@ -156,6 +169,18 @@ a:hover {
 }
 
 .gazeteer_option_selected
+{
+	font-size:7pt;
+	color: #cb181d;
+	font-weight:bolder;
+	list-style-type: none;
+	display:inline-block; 
+	padding-right: 20px;
+	cursor:pointer;
+	cursor:hand;
+}
+
+.gazeteer_model_selected
 {
 	font-size:7pt;
 	color: #cb181d;

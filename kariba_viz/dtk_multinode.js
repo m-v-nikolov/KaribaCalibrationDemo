@@ -79,7 +79,9 @@ var cluster_select = '80202_6';
 //var gazeteer_select = '4d_w_ITN_lowest_low_medium_high_drug_cov_0_35_0_55_0_7';
 //var gazeteer_select = '4d_w_ITN_lowest_low_medium_high_drug_cov_0_35_0_55_0_7_prev_sort_and_weights'
 //var gazeteer_select = 'multi_cat_calib';
-var gazeteer_select = 'cc_trunc_ls_norm_categories_weather_pilot'
+//var gazeteer_select = 'corr_folded_norm_pop_cc_2011_2013_cc_w_0.00126_climate_categories_pilot_categories'
+var gazeteer_select = 'unselect'
+var gazeteer_select_model = 'unselect'
 var rnd_select = 0;
 
 
@@ -238,7 +240,7 @@ function clusters_map_display(id, clusters_topo_input, cl, title)
 }
 
 
-function pop_bubbles_map_display(id, clusters_input, title, map_type, histogram, figure, rdt_obs, rmse, drug_cov, itns, reinf, habitats_const, habitats_temp, habitats_comb, rdt_sim)
+function pop_bubbles_map_display(id, clusters_input, title, map_type, histogram, figure, rdt_obs, rmse, drug_cov, itns, reinf, habitats_const, habitats_temp, habitats_comb, rdt_sim, rdt_sn_sim)
 {
 	id = typeof id !== 'undefined' ? id : "clusters";
 	clusters_input = typeof clusters_input !== 'undefined' ? clusters_input : "snapshot.json";
@@ -247,6 +249,7 @@ function pop_bubbles_map_display(id, clusters_input, title, map_type, histogram,
 	figure = typeof figure !== 'undefined' ? figure : false;
 	rdt_obs = typeof rdt_obs !== 'undefined' ? rdt_obs : false;
 	rdt_sim = typeof rdt_sim !== 'undefined' ? rdt_sim : false;
+	rdt_sn_sim = typeof rdt_sn_sim !== 'undefined' ? rdt_sn_sim : false;
 	rmse = typeof rmse !== 'undefined' ? rmse : false;
 	itns = typeof itns !== 'undefined' ? itns : false;
 	drug_cov = typeof drug_cov !== 'undefined' ? drug_cov : false;
@@ -268,7 +271,7 @@ function pop_bubbles_map_display(id, clusters_input, title, map_type, histogram,
 	var projection = this.display.map.projection;
 	
 	clusters_input = gazeteer_select + "_" + clusters_input;
-	//alert(clusters_input)
+	
 	d3.json(clusters_input, function (collection) {
         // Let's give the little bubbles a chance to be moused over when they overlap big ones
 		//alert(collection)
@@ -302,6 +305,17 @@ function pop_bubbles_map_display(id, clusters_input, title, map_type, histogram,
                 if(rdt_sim)
                 {
                 	var rdt_val = d.RDT_mn_sim[rnd_select];
+                	if (rdt_val >= 0) { c = colorScaleRDT(rdt_val); } // TODO: color legend?
+                	else { c = 'gray'; }
+                }
+                if(rdt_sn_sim)
+                {
+                	// do not display pilot round for now
+                	// fix model side to avoid hard coding
+                	if (d.RDT_sn_sim.length == 7)
+                		var rdt_val = d.RDT_sn_sim[rnd_select + 1]
+                	else
+                		var rdt_val = d.RDT_sn_sim[rnd_select]
                 	if (rdt_val >= 0) { c = colorScaleRDT(rdt_val); } // TODO: color legend?
                 	else { c = 'gray'; }
                 }
@@ -642,6 +656,19 @@ function display_text_f(d) {
 	if(this.id.indexOf("rdt_sim") != -1)
 	{
 	    var rdt = this.__data__.RDT_mn_sim[rnd_select];
+	    //alert(facilityID +  " " + rdt)
+	    if (rdt < 0) { rdt = 'N/A'; }
+	    else { rdt = d3.format('%')(rdt); }
+	    display_text.push(facilityID);
+	    display_text.push("RDT+: "+rdt);
+	}
+	if(this.id.indexOf("rdt_sn_sim") != -1)
+	{
+		if (d.RDT_sn_sim.length == 7)
+    		var rdt = this.__data__.RDT_sn_sim[rnd_select + 1];
+    	else
+    		var rdt = this.__data__.RDT_sn_sim[rnd_select];
+		
 	    //alert(facilityID +  " " + rdt)
 	    if (rdt < 0) { rdt = 'N/A'; }
 	    else { rdt = d3.format('%')(rdt); }
@@ -1359,7 +1386,7 @@ function load_gazeteer(json_gazeteer, json_clusters, calib_params_names)
 	var gazeteer_selection =  d3.select(".resourcecontainer.buttons").append("ul").html("<li class = 'gazeteer_options_header'>" + calib_params_names + "</li>")
 			.attr("class", "gazeteer");
 	
-				/* the usual  d3js append function call (below) produces bad html in the context of additionally apended list items binded to data (further below) */
+				/* the usual  d3js append function call (below) produces bad html in the context of additionally appended list items binded to data (further below) */
 	
 				/*
 				.append("li")
@@ -1373,17 +1400,27 @@ function load_gazeteer(json_gazeteer, json_clusters, calib_params_names)
 			.data(gazeteer)
 			.enter().append("li")
 			 .attr("value", function (d) {
-				 	return d.sweep_name; 
+				 	return d.model; 
 			 		})
-			 .attr("class", function(d){if (d.sweep_name == gazeteer_select) return "gazeteer_option_selected"; else return "gazeteer_option";})
+			 .attr("class", function(d){if (d.model == gazeteer_select_model) return "gazeteer_model_selected"; else return "gazeteer_model";})
 			 .on("click", function () {
-                gazeteer_select = this.__data__.sweep_name;
-                load_map_bubbles_hist_err_surf(json_clusters, json_gazeteer, "", "bubble_hist_err_surf");
+                gazeteer_select_model = this.__data__.model;
             })
-            .append("a")
-            .html(function (d) {
-				 	return d.name; 
-			 	 })
+            //.append("a")
+            .html(function(d){ return d.params })
+            .append("select")
+            .selectAll("option")
+            .data(function(d) {
+            		return d.select;
+            		})
+            .enter().append("option")
+            	.attr("value", function(d){ return d.value })
+            	.text(function(d){ return d.name})
+            	.attr("selected", function(d){ if (d.value == gazeteer_select) return true;})
+				.on("click", function (d) {
+			            gazeteer_select = d.value;
+			            load_map_bubbles_hist_err_surf(json_clusters, json_gazeteer, "", "bubble_hist_err_surf");
+					}) 	
 		});
 	
 	
@@ -1668,45 +1705,45 @@ function load_map_bubbles_hist_err_surf(json_input, json_input_gazeteer, map_tit
 	
 	map_display = null;
 	//histogram, figure, rdt_obs, rmse, drug_cov, itns, reinf, habitats_const, habitats_temp, habitats_comb, rdt_sim
-	var pop_bubbles_layer_rdt_obs = new pop_bubbles_map_display("pop_bubbles_rdt_obs", json_input, "RDT+ (srvlns.)", "rdt_obs",  true, true, true, false, false, false, false, false, false, false, false);
-	
-	map_display = null;
-	var pop_bubbles_layer_temp_habs =  pop_bubbles_map_display("pop_bubbles_habs_temp", json_input, "All habs", "habitats_temp", true, true, false, false, false, false, false, false, true, false, false);
-	
-	map_display = null;
-	var pop_bubbles_layer_comb_habs =  pop_bubbles_map_display("pop_bubbles_habs_comb", json_input, "Effect. const", "habitats_comb", true, true, false, false, false, false, false, false, false, true, false);
+	var pop_bubbles_layer_rdt_obs = new pop_bubbles_map_display("pop_bubbles_rdt_obs", json_input, "RDT+ (srvlns.)", "rdt_obs",  true, true, true, false, false, false, false, false, false, false, false, false);
 
+	map_display = null;
+	var pop_bubbles_layer_rdt_sim = new pop_bubbles_map_display("pop_bubbles_rdt_sim", json_input, "RDT+ (SN sim)", "rdt_sn_sim",  true, true, false, false, false, false, false, false, false, false, false, true);
+	
+	map_display = null;
+	var pop_bubbles_layer_temp_habs =  pop_bubbles_map_display("pop_bubbles_habs_temp", json_input, "All habs", "habitats_temp", true, true, false, false, false, false, false, false, true, false, false, false);
+	
 	/*
 	map_display = null;
-	var pop_bubbles_layer_rdt_sim = new pop_bubbles_map_display("pop_bubbles_rdt_sim", json_input, "RDT+ (sim)", "rdt_sim",  true, true, false, false, false, false, false, false, false, false, true);
+	var pop_bubbles_layer_comb_habs =  pop_bubbles_map_display("pop_bubbles_habs_comb", json_input, "Effect. const", "habitats_comb", true, true, false, false, false, false, false, false, false, true, false, false);
 	*/
 	
 	/*
 	map_display = null;
-	var pop_bubbles_layer_reinf = new pop_bubbles_map_display("pop_bubbles_reinf", json_input, "Reinfection (srvlns.)", "reinfection",  true, true, false, false, false, false, true, false, false, false, false);
+	var pop_bubbles_layer_reinf = new pop_bubbles_map_display("pop_bubbles_reinf", json_input, "Reinfection (srvlns.)", "reinfection",  true, true, false, false, false, false, true, false, false, false, false, false);
 	*/
 	
 	/*
 	map_display = null;
-	var pop_bubbles_layer_rmse = new pop_bubbles_map_display("pop_bubbles_rmse", json_input, "Residuals", "rmse",  true, true, false, true, false, false, false, false, false, false, false);
+	var pop_bubbles_layer_rmse = new pop_bubbles_map_display("pop_bubbles_rmse", json_input, "Residuals", "rmse",  true, true, false, true, false, false, false, false, false, false, false, false);
 	*/
 	
 	/*
 	map_display = null;
 	//var pop_squares_layer_habs =  pop_squares_map_display("pop_squares_habs", json_input, "Hab. (RDT+ fit)", "habitats", true);
-	var pop_bubbles_layer_const_habs =  pop_bubbles_map_display("pop_bubbles_habs_const", json_input, "Const.", "habitats_const",true, true, false, false, false, false, false, true, false, false, false);
+	var pop_bubbles_layer_const_habs =  pop_bubbles_map_display("pop_bubbles_habs_const", json_input, "Const.", "habitats_const",true, true, false, false, false, false, false, true, false, false, false, , false);
 	*/
 	
 	
 	
 	/*
 	map_display = null;
-	var pop_bubbles_layer_drug_cov = new pop_bubbles_map_display("pop_bubbles_drug_coverage", json_input, "Drugs", "drug_coverage",  true, true, false, false, true, false, false, false, false, false, false);
+	var pop_bubbles_layer_drug_cov = new pop_bubbles_map_display("pop_bubbles_drug_coverage", json_input, "Drugs", "drug_coverage",  true, true, false, false, true, false, false, false, false, false, false, false);
 	*/
 	
 	/*
 	map_display = null;
-	var pop_bubbles_layer_itns = new pop_bubbles_map_display("pop_bubbles_itns", json_input, "ITNs", "itn_coverage",  true, true, false, false, false, true, false, false, false, false, false);
+	var pop_bubbles_layer_itns = new pop_bubbles_map_display("pop_bubbles_itns", json_input, "ITNs", "itn_coverage",  true, true, false, false, false, true, false, false, false, false, false, false);
 	*/
 	
 	/*
