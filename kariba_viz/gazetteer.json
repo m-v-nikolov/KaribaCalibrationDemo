@@ -8,12 +8,40 @@
                 "value": "unselect"
             }, 
             {
-                "name": "cc_w_0.00126", 
-                "value": "corr_folded_norm_pop_cc_2011_2013_cc_w_0.00126_climate_categories_pilot_categories"
+                "name": "cc_w_1e-07", 
+                "value": "corr_folded_norm_pop_cc_2011_2013_cc_w_1e-07_climate_categories_pilot_categories"
             }, 
             {
-                "name": "cc_w_0.00126", 
-                "value": "corr_folded_norm_pop_cc_2011_2013_cc_w_0.00126_climate_categories_pilot_categories"
+                "name": "cc_w_0.0001", 
+                "value": "corr_folded_norm_pop_cc_2011_2013_cc_w_0.0001_climate_categories_pilot_categories"
+            }, 
+            {
+                "name": "cc_w_0.001", 
+                "value": "corr_folded_norm_pop_cc_2011_2013_cc_w_0.001_climate_categories_pilot_categories"
+            }, 
+            {
+                "name": "cc_w_0.01", 
+                "value": "corr_folded_norm_pop_cc_2011_2013_cc_w_0.01_climate_categories_pilot_categories"
+            }, 
+            {
+                "name": "cc_w_0.1", 
+                "value": "corr_folded_norm_pop_cc_2011_2013_cc_w_0.1_climate_categories_pilot_categories"
+            }, 
+            {
+                "name": "cc_w_1", 
+                "value": "corr_folded_norm_pop_cc_2011_2013_cc_w_1_climate_categories_pilot_categories"
+            }, 
+            {
+                "name": "cc_w_0.015", 
+                "value": "corr_folded_norm_pop_cc_2011_2013_cc_w_0.015_climate_categories_pilot_categories"
+            }, 
+            {
+                "name": "cc_w_1.5", 
+                "value": "corr_folded_norm_pop_cc_2011_2013_cc_w_1.5_climate_categories_pilot_categories"
+            }, 
+            {
+                "name": "cc_w_0.0015", 
+                "value": "corr_folded_norm_pop_cc_2011_2013_cc_w_0.0015_climate_categories_pilot_categories"
             }
         ]
     }, 
@@ -25,9 +53,13 @@
                 "name": "", 
                 "value": "unselect"
             }, 
+			{
+                "name": "cc_w_1e-09", 
+                "value": "ls_folded_norm_pop_cc_2011_2013_cc_w_1e-09_climate_categories_pilot_categories"
+            },
             {
-                "name": "cc_w_0.00126", 
-                "value": "ls_folded_norm_pop_cc_2011_2013_cc_w_0.00126_climate_categories_pilot_categories"
+                "name": "cc_w_1e-06", 
+                "value": "ls_folded_norm_pop_cc_2011_2013_cc_w_1e-06_climate_categories_pilot_categories"
             }
         ]
     }

@@ -1503,7 +1503,7 @@ function display_figure(facilityID)
 		svg_img_container.attr("src", cc_traces_fig_src).attr("width","600px").attr("class", "fig");
 
 		var svg_img_container = figs.append("img")
-		svg_img_container.attr("src", err_surfs_fig_src).attr("width","300px").attr("class", "fig");
+		svg_img_container.attr("src", err_surfs_fig_src).attr("width","1400px").attr("class", "fig");
 		
 		load_scatter_pop(facilityID);
 			
