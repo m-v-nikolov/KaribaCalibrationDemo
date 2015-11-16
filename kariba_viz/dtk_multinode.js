@@ -16,8 +16,12 @@ var heightPop = d3.scale.sqrt()
 
 // Colormap for prevalence points
 var colorScaleRDT = d3.scale.quantize()
-            .domain([0, 0.7])
+            .domain([0, 0.52])
             .range(colorbrewer.OrRd[9]);
+
+var colorScaleRDTSim = d3.scale.quantize()
+.domain([0, 0.52])
+.range(colorbrewer.OrRd[9]);
 
 var colorScaleRMSE = d3.scale.quantize()
 .domain([-0.03, 0.01])
@@ -305,7 +309,7 @@ function pop_bubbles_map_display(id, clusters_input, title, map_type, histogram,
                 if(rdt_sim)
                 {
                 	var rdt_val = d.RDT_mn_sim[rnd_select];
-                	if (rdt_val >= 0) { c = colorScaleRDT(rdt_val); } // TODO: color legend?
+                	if (rdt_val >= 0) { c = colorScaleRDTSim(rdt_val); } // TODO: color legend?
                 	else { c = 'gray'; }
                 }
                 if(rdt_sn_sim)
@@ -316,7 +320,7 @@ function pop_bubbles_map_display(id, clusters_input, title, map_type, histogram,
                 		var rdt_val = d.RDT_sn_sim[rnd_select + 1]
                 	else
                 		var rdt_val = d.RDT_sn_sim[rnd_select]
-                	if (rdt_val >= 0) { c = colorScaleRDT(rdt_val); } // TODO: color legend?
+                	if (rdt_val >= 0) { c = colorScaleRDTSim(rdt_val); } // TODO: color legend?
                 	else { c = 'gray'; }
                 }
                 if(rmse)
@@ -1492,7 +1496,7 @@ function display_figure(facilityID)
 		//reinf_calib_fig_src = gazeteer_select + "/calibs/reinf/cluster_calib_"+facilityID+"_reinf.png"
 		
 		err_surfs_fig_src =  gazeteer_select + "/err_surfaces/surf_"+facilityID+".png"
-		cc_traces_fig_src = gazeteer_select + "/cc_traces/cc_trace_"+facilityID+".png"
+		cc_traces_fig_src = gazeteer_select + "/weighted_cc_traces/weighted_cc_trace_"+facilityID+".png"
 		prev_traces_fig_src = gazeteer_select + "/prev_traces/prev_trace_"+facilityID+".png"
 			
 		
