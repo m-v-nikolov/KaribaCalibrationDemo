@@ -19,6 +19,10 @@ var colorScaleRDT = d3.scale.quantize()
             .domain([0, 0.52])
             .range(colorbrewer.OrRd[9]);
 
+var colorScaleSignedRes = d3.scale.quantize()
+.domain([-0.5, 0, 0.5])
+.range(colorbrewer.RdYlGn[9]);
+
 var colorScaleRDTSim = d3.scale.quantize()
 .domain([0, 0.52])
 .range(colorbrewer.OrRd[9]);
@@ -244,7 +248,7 @@ function clusters_map_display(id, clusters_topo_input, cl, title)
 }
 
 
-function pop_bubbles_map_display(id, clusters_input, title, map_type, histogram, figure, rdt_obs, rmse, drug_cov, itns, reinf, habitats_const, habitats_temp, habitats_comb, rdt_sim, rdt_sn_sim)
+function pop_bubbles_map_display(id, clusters_input, title, map_type, histogram, figure, rdt_obs, rmse, drug_cov, itns, reinf, habitats_const, habitats_temp, habitats_comb, rdt_sim, rdt_sn_sim, signed_res)
 {
 	id = typeof id !== 'undefined' ? id : "clusters";
 	clusters_input = typeof clusters_input !== 'undefined' ? clusters_input : "snapshot.json";
@@ -262,6 +266,7 @@ function pop_bubbles_map_display(id, clusters_input, title, map_type, histogram,
 	habitats_const = typeof habitats_const !== 'undefined' ? habitats_const : false;
 	habitats_temp = typeof habitats_temp !== 'undefined' ? habitats_temp : false;
 	habitats_comb = typeof habitats_comb !== 'undefined' ? habitats_comb : false;
+	signed_res = typeof signed_res !== 'undefined' ? signed_res : false;
 	
 	set_map_display(id, title);
 	this.display = map_display; 
@@ -327,6 +332,16 @@ function pop_bubbles_map_display(id, clusters_input, title, map_type, histogram,
                 {
                 	var rmse_val = d.fit_value;
             		if (rmse_val >= 0) { c = colorScaleRMSE(-rmse_val); } // TODO: color legend?
+                }
+                if(signed_res)
+                {		
+                	if (d.signed_res.length == 7)
+                		var signed_res_val = d.signed_res[rnd_select+1];
+                	else
+                		var signed_res_val = d.signed_res[rnd_select];
+                	
+            		if (signed_res_val > -100) { c = colorScaleSignedRes(signed_res_val); } // TODO: color legend?
+            		else {c = 'gray'}
                 }
                 if(drug_cov)
                 {
@@ -773,6 +788,18 @@ function display_text_f(d) {
      	display_text.push(facilityID);
 		display_text.push("Obs. Reinfection:");
 		display_text.push(function(){if (reinf != 'N/A') return reinf.toPrecision(2); else return reinf;});
+	}
+	if(this.id.indexOf("signed_res") != -1)
+	{
+		if (d.signed_res.length == 7)
+    		var signed_res = this.__data__.signed_res[rnd_select + 1];
+    	else
+    		var signed_res = this.__data__.signed_res[rnd_select];
+		
+	    //alert(facilityID +  " " + rdt)
+	    if (signed_res < -100) { signed_res = 'N/A'; }
+	    display_text.push(facilityID);
+	    display_text.push("Signed res.: "+signed_res);
 	}
 		
     var svg_maps = this.parentNode.parentNode;
@@ -1709,14 +1736,18 @@ function load_map_bubbles_hist_err_surf(json_input, json_input_gazeteer, map_tit
 	
 	map_display = null;
 	//histogram, figure, rdt_obs, rmse, drug_cov, itns, reinf, habitats_const, habitats_temp, habitats_comb, rdt_sim
-	var pop_bubbles_layer_rdt_obs = new pop_bubbles_map_display("pop_bubbles_rdt_obs", json_input, "RDT+ (srvlns.)", "rdt_obs",  true, true, true, false, false, false, false, false, false, false, false, false);
+	var pop_bubbles_layer_rdt_obs = new pop_bubbles_map_display("pop_bubbles_rdt_obs", json_input, "RDT+ (srvlns.)", "rdt_obs",  true, true, true, false, false, false, false, false, false, false, false, false, false);
 
 	map_display = null;
-	var pop_bubbles_layer_rdt_sim = new pop_bubbles_map_display("pop_bubbles_rdt_sim", json_input, "RDT+ (SN sim)", "rdt_sn_sim",  true, true, false, false, false, false, false, false, false, false, false, true);
+	var pop_bubbles_layer_rdt_sim = new pop_bubbles_map_display("pop_bubbles_rdt_sim", json_input, "RDT+ (SN sim)", "rdt_sn_sim",  true, true, false, false, false, false, false, false, false, false, false, true, false);
 	
 	map_display = null;
-	var pop_bubbles_layer_temp_habs =  pop_bubbles_map_display("pop_bubbles_habs_temp", json_input, "All habs", "habitats_temp", true, true, false, false, false, false, false, false, true, false, false, false);
+	var pop_bubbles_layer_temp_habs =  pop_bubbles_map_display("pop_bubbles_signed_res", json_input, "Signed residuals (prev.)", "signed_res", true, true, false, false, false, false, false, false, false, false, false, false, true);
 	
+	/*
+	map_display = null;
+	var pop_bubbles_layer_temp_habs =  pop_bubbles_map_display("pop_bubbles_habs_temp", json_input, "All habs", "habitats_temp", true, true, false, false, false, false, false, false, true, false, false, false);
+	*/
 	/*
 	map_display = null;
 	var pop_bubbles_layer_comb_habs =  pop_bubbles_map_display("pop_bubbles_habs_comb", json_input, "Effect. const", "habitats_comb", true, true, false, false, false, false, false, false, false, true, false, false);
