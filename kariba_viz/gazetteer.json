@@ -20,6 +20,10 @@
             {
                 "name": "cc_w_0.0051", 
                 "value": "ls_folded_norm_pop_cc_2011_2013_cc_w_0.0051_climate_categories_pilot_categories"
+            }, 
+            {
+                "name": "cc_w_1e-07", 
+                "value": "ls_folded_norm_pop_cc_2011_2013_cc_w_1e-07_climate_categories_pilot_categories"
             }
         ]
     }
