@@ -799,7 +799,7 @@ function display_text_f(d) {
 	    //alert(facilityID +  " " + rdt)
 	    if (signed_res < -100) { signed_res = 'N/A'; }
 	    display_text.push(facilityID);
-	    display_text.push("Signed res.: "+signed_res);
+	    display_text.push("Res. (% error): "+ d3.format('%')(signed_res));
 	}
 		
     var svg_maps = this.parentNode.parentNode;
@@ -1742,7 +1742,7 @@ function load_map_bubbles_hist_err_surf(json_input, json_input_gazeteer, map_tit
 	var pop_bubbles_layer_rdt_sim = new pop_bubbles_map_display("pop_bubbles_rdt_sim", json_input, "RDT+ (SN sim)", "rdt_sn_sim",  true, true, false, false, false, false, false, false, false, false, false, true, false);
 	
 	map_display = null;
-	var pop_bubbles_layer_temp_habs =  pop_bubbles_map_display("pop_bubbles_signed_res", json_input, "Signed residuals (prev.)", "signed_res", true, true, false, false, false, false, false, false, false, false, false, false, true);
+	var pop_bubbles_layer_temp_habs =  pop_bubbles_map_display("pop_bubbles_signed_res", json_input, "Res. (prev.)", "signed_res", true, true, false, false, false, false, false, false, false, false, false, false, true);
 	
 	/*
 	map_display = null;
