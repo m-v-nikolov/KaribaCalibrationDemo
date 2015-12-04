@@ -29,7 +29,7 @@
     }, 
     {
         "model": "ls_folded_norm_pop_species_ext_cc_2011_2013", 
-        "params": "{lowest,very_low,ext_low,low}<br />[0.1, 60]<br />{0.35,0.55,0.7}<br />[0.1, 60]<br />ls_folded_norm_pop_species_ext_cc_2011_2013<br />", 
+        "params": "{lowest,very_low,ext_low,low}<br />[0.1, 60]<br />[0.1, 60]<br />{0.35,0.55,0.7}<br />ls_folded_norm_pop_species_ext_cc_2011_2013<br />", 
         "select": [
             {
                 "name": "", 
