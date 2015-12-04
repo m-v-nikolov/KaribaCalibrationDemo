@@ -1,25 +1,11 @@
 [
     {
-        "model": "corr_folded_norm_pop_cc_2011_2013", 
-        "params": "{lowest,ext_low,low,very_low}<br />[0.01, 12.0]<br />[0.05, 12.0]<br />{0.7,0.55,0.35}<br />corr_folded_norm_pop_cc_2011_2013<br />", 
-        "select": [
-            {
-                "name": "", 
-                "value": "unselect"
-            }
-        ]
-    }, 
-    {
         "model": "ls_folded_norm_pop_cc_2011_2013", 
         "params": "{lowest,ext_low,low,very_low}<br />[0.01, 12.0]<br />[0.05, 12.0]<br />{0.7,0.55,0.35}<br />ls_folded_norm_pop_cc_2011_2013<br />", 
         "select": [
             {
                 "name": "", 
                 "value": "unselect"
-            }, 
-            {
-                "name": "cc_w_0.0051", 
-                "value": "ls_folded_norm_pop_cc_2011_2013_cc_w_0.0051_climate_categories_pilot_categories"
             }, 
             {
                 "name": "cc_w_1e-07", 
@@ -38,14 +24,20 @@
             {
                 "name": "cc_w_1e-07", 
                 "value": "ls_folded_norm_pop_rnds_prev_6x_x_x_x_x_x_x_cc_2011_2013_cc_w_1e-07_climate_categories_pilot_categories"
-            }, 
+            }
+        ]
+    }, 
+    {
+        "model": "ls_folded_norm_pop_species_ext_cc_2011_2013", 
+        "params": "{lowest,very_low,ext_low,low}<br />[0.1, 60]<br />{0.35,0.55,0.7}<br />[0.1, 36]<br />ls_folded_norm_pop_species_ext_cc_2011_2013<br />", 
+        "select": [
             {
-                "name": "cc_w_1e-05", 
-                "value": "ls_folded_norm_pop_rnds_prev_6x_x_x_x_x_x_x_cc_2011_2013_cc_w_1e-05_climate_categories_pilot_categories"
-            }, 
+                "name": "", 
+                "value": "unselect"
+            },
             {
-                "name": "cc_w_0.001", 
-                "value": "ls_folded_norm_pop_rnds_prev_6x_x_x_x_x_x_x_cc_2011_2013_cc_w_0.001_climate_categories_pilot_categories"
+                "name": "cc_w_1e-07", 
+                "value": "ls_folded_norm_pop_species_ext_cc_2011_2013_cc_w_1e-07"
             }
         ]
     }
