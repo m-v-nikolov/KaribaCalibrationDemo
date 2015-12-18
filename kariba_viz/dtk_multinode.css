@@ -94,6 +94,10 @@ a:hover {
   fill: green;
 }
 
+.bar_res {
+  fill: blue;
+}
+
 .figs
 {
 	position:absolute;

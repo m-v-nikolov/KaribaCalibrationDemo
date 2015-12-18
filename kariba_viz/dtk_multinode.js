@@ -616,8 +616,10 @@ function mouseover_f(map_type, data, histogram, figure)
 	{
 	    load_histogram("alt","alt","Altitude");
 	    load_histogram("veg","veg","Vegetation");
+	    load_histogram("res","res","Sum sq. error");
         draw_histogram(facilityID, "alt", "hists/altitude_");
         draw_histogram(facilityID, "veg", "hists/vegetation_");
+        draw_histogram(facilityID, "res", "hists/res_");
 	}
 
 	data_ps = d3.selectAll(".f_" + facilityID)
@@ -1212,7 +1214,7 @@ function draw_histogram(cluster_id, hist_id, data_path)
 	d3.select(".resourcecontainer.maps").selectAll("#"+hist_id).selectAll(".bar_"+hist_id).remove();
 
 	d3.tsv(data_path+cluster_id+".tsv", type, function(error, data) {
-		  x.domain(data.map(function(d) { if(hist_id == "alt") return d.altitude; else return d.vegetation;}));
+		  x.domain(data.map(function(d) { if(hist_id == "alt") return d.altitude; else if(hist_id == "res") return d.residuals; else return d.vegetation;}));
 		  //alert(data.length)
 		  //alert(d3.max(data, function(d){ return d.frequency; }))
 		  y.domain([0, d3.max(data, function(d){ return d.frequency; })]);
@@ -1220,7 +1222,7 @@ function draw_histogram(cluster_id, hist_id, data_path)
 	      .data(data)
 	    .enter().append("rect")
 	      .attr("class", "bar_" + hist_id)
-	      .attr("x", function(d) { if(hist_id == "alt") return x(d.altitude); else return x(d.vegetation);})
+	      .attr("x", function(d) { if(hist_id == "alt") return x(d.altitude); else if(hist_id=="res") return x(d.residuals); else return x(d.vegetation);})
 	      .attr("width", x.rangeBand())
 	      .attr("y", function(d) { return y(d.frequency); })
 	      .attr("height", function(d) { return height - y(d.frequency); });
@@ -1636,6 +1638,7 @@ function load_comparative_scatter_plots(snapshot)
 	
 	load_histogram("alt","alt","Altitude");
 	load_histogram("veg","veg","Vegetation");
+	load_histogram("res","res","Sum sq. error");
 }
 
 
