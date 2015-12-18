@@ -616,7 +616,7 @@ function mouseover_f(map_type, data, histogram, figure)
 	{
 	    load_histogram("alt","alt","Altitude");
 	    load_histogram("veg","veg","Vegetation");
-	    load_histogram("res","res","Sum sq. error");
+	    load_histogram("res","res","");
         draw_histogram(facilityID, "alt", "hists/altitude_");
         draw_histogram(facilityID, "veg", "hists/vegetation_");
         draw_histogram(facilityID, "res", "hists/res_");
@@ -1132,8 +1132,8 @@ function load_scatter_pop(cluster_id)
 function load_histogram(id, type, label)
 {
 	var margin = {top: 50, right: 20, bottom: 50, left: 40},
-	    width = 250 - margin.left - margin.right,
-	    height = 200 - margin.top - margin.bottom;
+	    width = 400 - margin.left - margin.right,
+	    height = 250 - margin.top - margin.bottom;
 	
 	var x = d3.scale.ordinal()
 	    .rangeRoundBands([0, width], .1);
@@ -1149,7 +1149,7 @@ function load_histogram(id, type, label)
 	var yAxis = d3.svg.axis()
 	    .scale(y)
 	    .orient("left")
-	    .ticks(10, "%");
+	    .ticks(10, "");
 	
 	d3.selectAll("#"+id).remove();
 	d3.selectAll("."+id).remove();
@@ -1191,8 +1191,8 @@ function draw_histogram(cluster_id, hist_id, data_path)
 {
 
 	var margin = {top: 50, right: 20, bottom: 50, left: 40},
-    width = 250 - margin.left - margin.right,
-    height = 200 - margin.top - margin.bottom;
+    width = 400 - margin.left - margin.right,
+    height = 250 - margin.top - margin.bottom;
 	
 	var x = d3.scale.ordinal()
 	    .rangeRoundBands([0, width], .1);
@@ -1217,7 +1217,8 @@ function draw_histogram(cluster_id, hist_id, data_path)
 		  x.domain(data.map(function(d) { if(hist_id == "alt") return d.altitude; else if(hist_id == "res") return d.residuals; else return d.vegetation;}));
 		  //alert(data.length)
 		  //alert(d3.max(data, function(d){ return d.frequency; }))
-		  y.domain([0, d3.max(data, function(d){ return d.frequency; })]);
+		  y.domain([0, d3.max(data, function(d){ return d.frequency; })])
+		   .range([height,0]);
 		  svg.selectAll(".bar_" + hist_id)
 	      .data(data)
 	    .enter().append("rect")
@@ -1638,7 +1639,7 @@ function load_comparative_scatter_plots(snapshot)
 	
 	load_histogram("alt","alt","Altitude");
 	load_histogram("veg","veg","Vegetation");
-	load_histogram("res","res","Sum sq. error");
+	load_histogram("res","res","");
 }
 
 
