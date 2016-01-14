@@ -35,14 +35,15 @@ var colorScaleReinf = d3.scale.quantize()
 .domain([-0.02, 0.5])
 .range(colorbrewer.PuRd[9]);
 
-var colorScaleHabsConst = d3.scale.quantize()
-.domain([0.01, 14])
+var colorScaleHabs = d3.scale.quantize()
+.domain([0.01, 120])
 .range(colorbrewer.RdPu[9]);
 
+/*
 var colorScaleHabsComb = d3.scale.quantize()
 .domain([0.01, 5])
 .range(colorbrewer.RdPu[9]);
-
+*/
 
 var colorScaleHabsAll = d3.scale.quantize()
 .domain([0, 3])
@@ -248,7 +249,7 @@ function clusters_map_display(id, clusters_topo_input, cl, title)
 }
 
 
-function pop_bubbles_map_display(id, clusters_input, title, map_type, histogram, figure, rdt_obs, rmse, drug_cov, itns, reinf, habitats_const, habitats_temp, habitats_comb, rdt_sim, rdt_sn_sim, signed_res)
+function pop_bubbles_map_display(id, clusters_input, title, map_type, histogram, figure, rdt_obs, rmse, drug_cov, itns, reinf, habitats_funestus, habitats_temp, habitats_arabiensis, rdt_sim, rdt_sn_sim, signed_res)
 {
 	id = typeof id !== 'undefined' ? id : "clusters";
 	clusters_input = typeof clusters_input !== 'undefined' ? clusters_input : "snapshot.json";
@@ -266,6 +267,8 @@ function pop_bubbles_map_display(id, clusters_input, title, map_type, histogram,
 	habitats_const = typeof habitats_const !== 'undefined' ? habitats_const : false;
 	habitats_temp = typeof habitats_temp !== 'undefined' ? habitats_temp : false;
 	habitats_comb = typeof habitats_comb !== 'undefined' ? habitats_comb : false;
+	habitats_arabiensis = typeof habitats_arabiensis !== 'undefined' ? habitats_arabiensis : false;
+	habitats_funestus = typeof habitats_funestus !== 'undefined' ? habitats_funestus : false;
 	signed_res = typeof signed_res !== 'undefined' ? signed_res : false;
 	
 	set_map_display(id, title);
@@ -373,6 +376,16 @@ function pop_bubbles_map_display(id, clusters_input, title, map_type, histogram,
                 {
                 	var const_h = d.const_h
                     if (const_h >= 0) { c = colorScaleHabsConst(const_h); }
+                }
+                if(habitats_arabiensis)
+                {
+                	var arabiensis_sc = d.arabiensis_sc
+                    if (arabiensis_sc >= 0) { c = colorScaleHabs(arabiensis_sc); }
+                }
+                if(habitats_funestus)
+                {
+                	var funestus_sc = d.funestus_sc
+                    if (funestus_sc >= 0) { c = colorScaleHabs(funestus_sc); }
                 }
                 if(habitats_temp)
                 {
@@ -513,8 +526,8 @@ function load_scatter_habs(id, clusters_input)
 	var y = d3.scale.linear().range([height, 0]);
     
 	// Scale the domain of the data
-    x.domain([0,12]);
-    y.domain([0,24]);
+    x.domain([0,80]);
+    y.domain([0,120]);
     
 	d3.select(".resourcecontainer.maps").select("#scatter_habs").remove();	
 	var svg = d3.select(".resourcecontainer.maps").append("svg")
@@ -539,8 +552,8 @@ function load_scatter_habs(id, clusters_input)
         .data(collection)
       .enter().append("circle")
         .attr("class", function(d) { return 'f_' + d.FacilityName; })
-        .attr("cx", function(d) { return x(d.temp_h); })
-	    .attr("cy", function(d) { return y(d.const_h*d.temp_h); })        
+        .attr("cx", function(d) { return x(d.funestus_sc); })
+	    .attr("cy", function(d) { return y(d.arabiensis_sc); })        
         .attr("opacity", 0.7)
         .attr("fill", function (d) {
             var c = 'white'
@@ -571,7 +584,7 @@ function load_scatter_habs(id, clusters_input)
         .call(xAxis)
         .attr("transform", "translate(0," + height + ")")
       .append("text")
-        .text("All habitats")
+        .text("Funestus scale")
         .attr("x", 6)
         .attr("dx", ".71em")
         //.attr("class","axis_"+id);
@@ -581,7 +594,7 @@ function load_scatter_habs(id, clusters_input)
         .attr("class", "y axis")
         .call(yAxis)
        .append("text")
-    	.text("Eff. constant habitat")
+    	.text("Arabiensis scale")
         .attr("transform", "rotate(-90)")
         .attr("y", 6)
         .attr("dy", ".71em")
@@ -724,6 +737,27 @@ function display_text_f(d) {
 		
 		display_text.push(facilityID);
 		display_text.push("const: " + const_h.toPrecision(2));
+		
+	}
+	else
+	if(this.id.indexOf("arabiensis") != -1)
+	{
+		var arabiensis_sc = this.__data__.arabiensis_sc;
+		//alert(facilityID +  " " + rdt)
+		if (arabiensis_sc < 0) { arabiensis_sc = 'N/A'; }
+		
+		display_text.push(facilityID);
+		display_text.push("arab.: " + arabiensis_sc.toPrecision(2));
+		
+	}
+	if(this.id.indexOf("funestus") != -1)
+	{
+		var funestus_sc = this.__data__.funestus_sc;
+		//alert(facilityID +  " " + rdt)
+		if (funestus_sc < 0) { funestus_sc = 'N/A'; }
+		
+		display_text.push(facilityID);
+		display_text.push("fun.: " + funestus_sc.toPrecision(2));
 		
 	}
 	if(this.id.indexOf("habitats_temp") != -1)
@@ -1531,10 +1565,10 @@ function display_figure(facilityID)
 			
 		
 		var svg_img_container = figs.append("img")
-		svg_img_container.attr("src", prev_traces_fig_src).attr("width","600px").attr("class", "fig");
+		svg_img_container.attr("src", prev_traces_fig_src).attr("width","550px").attr("class", "fig");
 		
 		var svg_img_container = figs.append("img")
-		svg_img_container.attr("src", cc_traces_fig_src).attr("width","600px").attr("class", "fig");
+		svg_img_container.attr("src", cc_traces_fig_src).attr("width","850px").attr("class", "fig");
 
 		var svg_img_container = figs.append("img")
 		svg_img_container.attr("src", err_surfs_fig_src).attr("width","1400px").attr("class", "fig");
@@ -1746,16 +1780,15 @@ function load_map_bubbles_hist_err_surf(json_input, json_input_gazeteer, map_tit
 	var pop_bubbles_layer_rdt_sim = new pop_bubbles_map_display("pop_bubbles_rdt_sim", json_input, "RDT+ (SN sim)", "rdt_sn_sim",  true, true, false, false, false, false, false, false, false, false, false, true, false);
 	
 	map_display = null;
-	var pop_bubbles_layer_temp_habs =  pop_bubbles_map_display("pop_bubbles_signed_res", json_input, "Res. (prev.)", "signed_res", true, true, false, false, false, false, false, false, false, false, false, false, true);
+	var pop_bubbles_layer_signed_res =  pop_bubbles_map_display("pop_bubbles_signed_res", json_input, "Res. (prev.)", "signed_res", true, true, false, false, false, false, false, false, false, false, false, false, true);
 	
-	/*
 	map_display = null;
-	var pop_bubbles_layer_temp_habs =  pop_bubbles_map_display("pop_bubbles_habs_temp", json_input, "All habs", "habitats_temp", true, true, false, false, false, false, false, false, true, false, false, false);
-	*/
-	/*
+	var pop_bubbles_layer_habs =  pop_bubbles_map_display("pop_bubbles_habs_funestus", json_input, "Funestus hab", "funestus", true, true, false, false, false, false, false, true, false, false, false, false, false);
+	
+	
 	map_display = null;
-	var pop_bubbles_layer_comb_habs =  pop_bubbles_map_display("pop_bubbles_habs_comb", json_input, "Effect. const", "habitats_comb", true, true, false, false, false, false, false, false, false, true, false, false);
-	*/
+	var pop_bubbles_layer_comb_habs =  pop_bubbles_map_display("pop_bubbles_habs_arabiensis", json_input, "Arabiensis hab", "arabiensis", true, true, false, false, false, false, false, false, false, true, false, false, false);
+	
 	
 	/*
 	map_display = null;
@@ -1785,9 +1818,9 @@ function load_map_bubbles_hist_err_surf(json_input, json_input_gazeteer, map_tit
 	var pop_bubbles_layer_itns = new pop_bubbles_map_display("pop_bubbles_itns", json_input, "ITNs", "itn_coverage",  true, true, false, false, false, true, false, false, false, false, false, false);
 	*/
 	
-	/*
+
 	load_scatter_habs("habitats_scatter", json_input)
-	*/
+
 	
 	//load_chart_pop("cluster_pop_ts.tsv", "Population Timeseries", "pop_bubbles", yaxis={nticks:5, style:'%'})
 	//load_chart_pop("New_Diagnostic_Prevalence.tsv", "Population Timeseries", "pop_bubbles", yaxis={nticks:5, style:'%'})
