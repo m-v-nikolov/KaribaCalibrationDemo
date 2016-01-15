@@ -26,5 +26,19 @@
                 "value": "ls_folded_norm_pop_species_3x_3x_x_x_3x_x_x_cc_w_1e-07"
             }
         ]
+    }, 
+    {
+        "model": "ls_folded_norm_pop_species_3x_6x_x_x_6x_x_x", 
+        "params": "{lowest,ext_low,low,very_low}<br />[0.01, 122]<br />{0.7,0.55,0.35}<br />[0.01, 122]<br />ls_folded_norm_pop_species_3x_6x_x_x_6x_x_x<br />", 
+        "select": [
+            {
+                "name": "", 
+                "value": "unselect"
+            }, 
+            {
+                "name": "cc_w_1e-07", 
+                "value": "ls_folded_norm_pop_species_3x_6x_x_x_6x_x_x_cc_w_1e-07"
+            }
+        ]
     }
 ]
