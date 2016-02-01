@@ -84,7 +84,7 @@ var colorScaleITNCov = d3.scale.ordinal()
 
 var margin_charts = { top: 50, right: 30, bottom: 20, left: 60 };
 
-var cluster_select = '80202_6';
+var cluster_select = '80209_2';
 //var gazeteer_select = '4d_w_ITN_lowest_low_medium_high_drug_cov_0_35_0_55_0_7';
 //var gazeteer_select = '4d_w_ITN_lowest_low_medium_high_drug_cov_0_35_0_55_0_7_prev_sort_and_weights'
 //var gazeteer_select = 'multi_cat_calib';
